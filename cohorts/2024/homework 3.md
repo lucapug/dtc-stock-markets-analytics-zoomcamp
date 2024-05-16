@@ -41,7 +41,7 @@ Let's utilize the knowledge from the visualised tree (clf10) (Code Snippet 5: 1.
 * As a result, write down the precision score for the remaining predictor (round to three decimal points). E.g. if you have 0.57897, your answer should be 0.579.
 
 ---
-### Question 3 (1 point): Unique correct predictions from a 10-levels deep decision tree classifier (pred5_clf_10) 
+### Question 3 (1 point): Unique correct predictions from a 10-levels deep Decision Tree Classifier (pred5_clf_10) 
 
 **What is the total number of records in the TEST dataset when the new prediction pred5_clf_10 is better than all 'hand' rules (pred0..pred4)?**
 
@@ -54,7 +54,7 @@ Suggested solution:
 
 * Step3: Convert 'only_pred5_is_correct' column from bool to int, and find how many times it is equal to 1 in the TEST set. Write down this as an answer.
 
-ADVANCED: define a function that can be applied to the whole row ([examples](https://sparkbyexamples.com/pandas/pandas-apply-function-to-every-row/)) and can find whether some prediction 'predX' (where X is one of the predictions) is uniquely correct. It should work even if there are 100 predictions available, so that you don't define manually the condition.  
+ADVANCED: define a function that can be applied to the whole row of predictions ([a few examples of pandas-apply-row-functions](https://sparkbyexamples.com/pandas/pandas-apply-function-to-every-row/)) and can find whether some prediction 'predX' (where X is one of the predictions) is uniquely correct. It should work even if there are 100 predictions available, so that you don't define manually the condition for 'predX'.  
 
 ---
 ### Question 4: (2 points) Hyperparameter tuning for a Decision Tree
@@ -63,24 +63,22 @@ ADVANCED: define a function that can be applied to the whole row ([examples](htt
 
 NOTE: please include `random_state=42` to Decision Tree Classifier init function (line `clf = DecisionTreeClassifier(max_depth=max_depth, random_state=42)`) to ensure consistency in results.
 
-Find optimal value of max_depth (between 1 and 20), building more and more advanced (=deep) trees when max_depth is growing.
-
 Follow these steps to find the optimal `max_depth`:
 * Iterate through `max_depth` values from 1 to 20.
 * Train the Decision Tree Classifier with the current `max_depth` parameter.
-* Optionally, visualize the 'head' of a tree using the [`sklearn.tree.plot_tree()`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.plot_tree.html) function, or the compact way  using the `export_text()` functionality ([read](https://stackoverflow.com/questions/20156951/how-do-i-find-which-attributes-my-tree-splits-on-when-using-scikit-learn)):
+* Optionally, visualize how the 'head' of each fitted tree changes with more advanced (=deep) trees. You can use the [`sklearn.tree.plot_tree()`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.plot_tree.html) function, or the compact way  with the `export_text()` functionality ([Stack Overflow example](https://stackoverflow.com/questions/20156951/how-do-i-find-which-attributes-my-tree-splits-on-when-using-scikit-learn)):
   ```
   from sklearn.tree import export_text
   tree_rules = export_text(model, feature_names=list(X_train), max_depth=3)
   print(tree_rules)
   ```
-* Calculate the precision score (you can use the function [sklearn.metrics.precision_score()](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html)) on the TEST dataset for each of the fitted trees. 
+* Calculate the precision score (you can use the function [sklearn.metrics.precision_score()](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html)) on the TEST dataset for each of the fitted trees. You can also compare it with the precision score on a VALIDATION dataset, which is included to the training phase (to have more data to train on). You should see that the precision score on a VALIDATION set starts to grow with the complexity of a tree (overfit), which isn't seen on the precision score on TEST.
 * Identify the optimal `max_depth`, where the  precision score is the highest on the TEST dataset. Record this value as  **best_max_depth** and submit as an answer.
 * Make predictions on all records (TRAIN+VALIDATION+TEST) and add the new prediction `pred6_clf_best` to the dataframe `new_df`.
 
-Additionally, compare the precision score of the tuned decision tree with previous predictions. You should observe an improvement (>0.58, or more than 58% precision), indicating that the tuned tree outperforms previous models.
+Additionally, compare the precision score of the tuned decision tree with previous predictions. You should observe an improvement (>0.58, or more than 58% precision), indicating that the tuned tree outperforms previous manual "hand" rules and Decision Tree predictions.
 
-(Advanced: Explore the concept of overfitting with [scikit-learn Decision Trees](https://scikit-learn.org/stable/modules/tree.html). Draw a line of precision/accuracy vs. max_depth and note whether there's a saturation of precision/accuracy as max_depth increases or if there's a tendency towards overfitting.)
+ADVANCED: Read more about different aspects of [scikit-learn Decision Trees](https://scikit-learn.org/stable/modules/tree.html). Draw a line of precision/accuracy vs. max_depth and note whether there's a saturation point of precision/accuracy as max_depth increases. In theory, there should be a trade-off between better fitting (=more complex trees) and generalization.
 
 ---
 ### [EXPLORATORY] Question 5: What data is missing? 
@@ -92,7 +90,7 @@ You can also propose something entirely different based on your intuition, but i
 ---
 ## Submitting the solutions
 
-[NOT READY YET] Form for submitting: https://courses.datatalks.club/sma-zoomcamp-2024/homework/hw03
+Form for submitting: https://courses.datatalks.club/sma-zoomcamp-2024/homework/hw03
 
 ---
 ## Leaderboard
